@@ -1,6 +1,8 @@
 package org.archadu.core.controller;
 
 import cn.dev33.satoken.stp.StpUtil;
+import org.archadu.core.dto.Response;
+import org.archadu.core.dto.UserRequest;
 import org.archadu.core.model.User;
 import org.archadu.core.service.AuthService;
 import org.archadu.core.service.UserService;
@@ -19,6 +21,7 @@ public class UserController {
     private final UserService userService;
     private final AuthService authService;
 
+
     @Autowired
     public UserController(UserService userService, AuthService authService) {
         this.userService = userService;
@@ -26,10 +29,9 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public User register(@RequestBody User user) {
-        System.out.println("Recieved user: " + user.getEmail());
-        User createdUser = userService.createUser(user);
-        return createdUser;
+    public Response<User> register(@RequestBody UserRequest req) {
+        User createdUser = userService.createUser(req);
+        return new Response<User>("Create new user success", createdUser);
     }
 
     // 测试登录，浏览器访问： http://localhost:8081/user/doLogin?username=zhang&password=123456
