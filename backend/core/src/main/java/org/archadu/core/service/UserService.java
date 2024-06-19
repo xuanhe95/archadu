@@ -20,6 +20,7 @@ public class UserService {
     public User createUser(UserRequest req){
         User user = new User();
         user.setUsername(req.username());
+        // Hash the password before saving it to the database
         String hashedPassword = BCrypt.hashpw(req.password(), BCrypt.gensalt());
         user.setPassword(hashedPassword);
         user.setEmail(req.email());

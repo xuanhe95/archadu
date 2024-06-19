@@ -1,5 +1,7 @@
 package org.archadu.core.controller;
 
+import cn.dev33.satoken.util.SaResult;
+import org.archadu.core.dto.Response;
 import org.archadu.core.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -9,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/auth/")
+@RequestMapping("/auth")
 public class AuthController {
     private final AuthService authService;
 
@@ -18,10 +20,22 @@ public class AuthController {
         this.authService = authService;
     }
 
-    @GetMapping("login")
-    public ResponseEntity<Boolean> login(@RequestParam String username, @RequestParam String password) {
-        boolean success = authService.login(username, password);
-        return ResponseEntity.ok(success);
+    @GetMapping("/login")
+    public Response<SaResult> login(@RequestParam String username, @RequestParam String password) {
+        SaResult result = authService.login(username, password);
+        return new Response<SaResult>("Login success", result);
+    }
+
+    @GetMapping("/logout")
+    public Response<SaResult> logout() {
+        SaResult result = authService.logout();
+        return new Response<SaResult>("Logout success", result);
+    }
+
+    @GetMapping("/is-login")
+    public Response<SaResult> isLogin() {
+        SaResult result = authService.isLogin();
+        return new Response<SaResult>("User is logged in", result);
     }
 
 }

@@ -47,6 +47,9 @@ public class User {
     }
 
 
+    public long getId() {
+        return id;
+    }
     public String getUsername() {
         return username;
     }

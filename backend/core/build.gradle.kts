@@ -23,6 +23,9 @@ dependencies {
 	// Sa-Token 权限认证，在线文档：https://sa-token.cc
 	implementation ("cn.dev33:sa-token-spring-boot3-starter:1.38.0")
 
+	// Sa-Token-OAuth2.0 模块
+	implementation ("cn.dev33:sa-token-oauth2:1.38.0")
+
 
 	// https://mvnrepository.com/artifact/org.springframework/spring-web
 	implementation("org.springframework:spring-web:6.1.8")
