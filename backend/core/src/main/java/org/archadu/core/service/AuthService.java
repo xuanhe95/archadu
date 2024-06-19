@@ -23,7 +23,7 @@ public class AuthService {
             return SaResult.error("Login failed");
         }
 
-        if(user.getUsername().equals(username) && user.getPassword().equals(hashedPassword)){
+        if(user.getUsername().equals(username) && user.getPassword().equals(password)){
             StpUtil.login(user.getId());
             return SaResult.ok("Login success");
         }
