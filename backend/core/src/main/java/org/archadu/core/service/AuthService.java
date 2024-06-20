@@ -1,24 +1,23 @@
 package org.archadu.core.service;
 
-import cn.dev33.satoken.secure.BCrypt;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.dev33.satoken.util.SaResult;
 import org.archadu.core.model.User;
-import org.archadu.core.repository.UserRepository;
+import org.archadu.core.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class AuthService {
-    private final UserRepository userRepository;
+    private final UserRepo userRepo;
     @Autowired
-    public AuthService(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public AuthService(UserRepo userRepo) {
+        this.userRepo = userRepo;
     }
 
     public SaResult login(String username, String password) {
 
-        User user = userRepository.findByUsername(username);
+        User user = userRepo.findByUsername(username);
         if(user == null){
             return SaResult.error("Login failed");
         }

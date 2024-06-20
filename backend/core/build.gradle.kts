@@ -54,6 +54,15 @@ dependencies {
 	implementation("jakarta.validation:jakarta.validation-api:3.1.0")
 
 
+	// https://mvnrepository.com/artifact/org.hihn/musicbrainzws2-java
+	implementation("org.hihn:musicbrainzws2-java:3.0.15")
+
+	// https://mvnrepository.com/artifact/fm.last/musicbrainz-data
+	implementation("fm.last:musicbrainz-data:3.0.0")
+
+	implementation("info.schnatterer.musicbrainzws2-java:musicbrainzws2-java:3.0.2")
+
+
 
 
 }

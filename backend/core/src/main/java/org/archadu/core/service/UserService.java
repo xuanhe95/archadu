@@ -1,20 +1,19 @@
 package org.archadu.core.service;
 
 import cn.dev33.satoken.secure.BCrypt;
-import cn.dev33.satoken.stp.StpUtil;
 import org.archadu.core.dto.UserRequest;
 import org.archadu.core.model.User;
-import org.archadu.core.repository.UserRepository;
+import org.archadu.core.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserService {
-    private final UserRepository userRepository;
+    private final UserRepo userRepo;
 
     @Autowired
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public UserService(UserRepo userRepo) {
+        this.userRepo = userRepo;
     }
 
     public User createUser(UserRequest req){
@@ -25,8 +24,9 @@ public class UserService {
         user.setPassword(hashedPassword);
         user.setEmail(req.email());
 
-        return userRepository.save(user);
+        return userRepo.save(user);
     }
+
 
 
 
