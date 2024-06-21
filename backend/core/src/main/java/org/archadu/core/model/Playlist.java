@@ -5,10 +5,10 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "user_playlists")
+@Table(name = "playlist")
 public class Playlist {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "playlist_id", nullable = false, updatable = false)
     private String id;
 
     @ManyToOne
@@ -20,6 +20,9 @@ public class Playlist {
 
     @Column(name = "description")
     private String description;
+
+    @Column(name = "cover_url")
+    private String coverUrl;
 
     @Column(name = "is_public", nullable = false)
     private boolean isPublic;
@@ -44,16 +47,24 @@ public class Playlist {
         this.updatedAt = LocalDateTime.now();
     }
 
-    public Playlist(User user, String playlistName, String description, boolean isPublic, boolean isCollaborative) {
+    public Playlist()  {
+    }
+
+    public Playlist(User user, String playlistName, String description, String coverUrl, boolean isPublic, boolean isCollaborative) {
         this.user = user;
         this.playlistName = playlistName;
         this.description = description;
+        this.coverUrl = coverUrl;
         this.isPublic = isPublic;
         this.isCollaborative = isCollaborative;
     }
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public void setCoverUrl(String coverUrl) {
+        this.coverUrl = coverUrl;
     }
 
     public void setPlaylistName(String playlistName) {
@@ -64,13 +75,15 @@ public class Playlist {
         this.description = description;
     }
 
-    public void setIsPublic(boolean isPublic) {
-        this.isPublic = isPublic;
+    public void setPublic(boolean isShared) {
+        this.isPublic = isShared;
     }
 
-    public void setIsCollaborative(boolean isCollaborative) {
+    public void setCollaborative(boolean isCollaborative) {
         this.isCollaborative = isCollaborative;
     }
+
+
 
 
 

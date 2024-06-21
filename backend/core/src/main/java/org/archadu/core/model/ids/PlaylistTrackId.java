@@ -1,18 +1,19 @@
-package org.archadu.core.model.id;
+package org.archadu.core.model.ids;
 
 import java.io.Serializable;
 import java.util.Objects;
 
 public class PlaylistTrackId implements Serializable {
-    private String playlistId;
-    private String trackId;
+
+    private String playlist;
+    private String track;
 
     public PlaylistTrackId() {
     }
 
-    public PlaylistTrackId(String playlistId, String trackId) {
-        this.playlistId = playlistId;
-        this.trackId = trackId;
+    public PlaylistTrackId(String playlist, String track) {
+        this.playlist = playlist;
+        this.track = track;
     }
 
     @Override
@@ -22,12 +23,12 @@ public class PlaylistTrackId implements Serializable {
 
         PlaylistTrackId that = (PlaylistTrackId) o;
 
-        return playlistId.equals(that.playlistId) && trackId.equals(that.trackId);
+        return playlist.equals(that.playlist) && track.equals(that.track);
     }
 
     @Override
     public int hashCode(){
-        return Objects.hash(playlistId, trackId);
+        return Objects.hash(playlist, track);
     }
 
 

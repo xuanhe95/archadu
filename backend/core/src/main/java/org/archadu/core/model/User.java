@@ -33,7 +33,6 @@ public class User {
         updatedAt = LocalDateTime.now();
     }
 
-
     public void setUsername(String username) {
         this.username = username;
     }
