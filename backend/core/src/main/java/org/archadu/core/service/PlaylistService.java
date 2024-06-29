@@ -9,7 +9,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class PlaylistService {
@@ -23,15 +25,11 @@ public class PlaylistService {
     }
 
     @Transactional
-    public Playlist createPlaylist(Long userId, String playlistName, String description, String coverUrl, boolean isPublic, boolean isCollaborative) {
+    public Playlist createPlaylist(Long userId, String playlistName, String description, String coverUrl, boolean shared, boolean collaborative) {
         User user = userRepo.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
 
-        Playlist existingPlaylist = playlistsRepo.findByPlaylistNameAndUser(playlistName, user);
-        if(existingPlaylist != null) {
-            throw new IllegalArgumentException("Playlist already exists");
-        }
-
-        Playlist playlist = new Playlist(user, playlistName, description, coverUrl, isPublic, isCollaborative);
+        String playlistId = UUID.randomUUID().toString();
+        Playlist playlist = new Playlist(playlistId, user, playlistName, description, coverUrl, shared, collaborative);
 
         try{
             return playlistsRepo.save(playlist);
@@ -43,11 +41,14 @@ public class PlaylistService {
 
 
 @Transactional
-    public Playlist updatePlaylist(String playlistId, Long userId, String playlistName, String description, String coverUrl, Boolean isPublic, Boolean isCollaborative) {
+    public Playlist updatePlaylist(String playlistId, Long userId, String playlistName, String description, String coverUrl, Boolean shared, Boolean collaborative) {
         Playlist playlist = playlistsRepo.findById(playlistId);
         if (playlist == null) {
             throw new RuntimeException("Playlist not found");
+        } else if(playlist.getDeletedAt() != null) {
+            throw new RuntimeException("Playlist is deleted");
         }
+
         if (userId != null) {
             User user = userRepo.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
             playlist.setUser(user);
@@ -61,11 +62,11 @@ public class PlaylistService {
         if(coverUrl != null) {
             playlist.setCoverUrl(coverUrl);
         }
-        if (isPublic != null) {
-            playlist.setPublic(isPublic);
+        if (shared != null) {
+            playlist.setShared(shared);
         }
-        if (isCollaborative != null) {
-            playlist.setCollaborative(isCollaborative);
+        if (collaborative != null) {
+            playlist.setCollaborative(collaborative);
         }
         try {
             return playlistsRepo.save(playlist);
@@ -73,16 +74,17 @@ public class PlaylistService {
             throw new IllegalArgumentException("Playlist already exists");
         }
     }
-@Transactional
+    @Transactional
     public void deletePlaylist(String playlistId) {
         Playlist playlist = playlistsRepo.findById(playlistId);
         if (playlist == null) {
             throw new RuntimeException("Playlist not found");
         }
         try{
-            playlistsRepo.delete(playlist);
+            playlist.setDeletedAt(LocalDateTime.now());
+            playlistsRepo.save(playlist);
         } catch (Exception e){
-            throw new IllegalArgumentException("Playlist not found");
+            throw new IllegalArgumentException("Playlist deletion failed");
         }
     }
 

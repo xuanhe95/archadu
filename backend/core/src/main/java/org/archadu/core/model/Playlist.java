@@ -5,10 +5,10 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "playlist")
+@Table(name = "playlists")
 public class Playlist {
     @Id
-    @Column(name = "playlist_id", nullable = false, updatable = false)
+    @Column(name = "id", nullable = false, updatable = false)
     private String id;
 
     @ManyToOne
@@ -24,17 +24,20 @@ public class Playlist {
     @Column(name = "cover_url")
     private String coverUrl;
 
-    @Column(name = "is_public", nullable = false)
-    private boolean isPublic;
+    @Column(name = "shared", nullable = false)
+    private boolean shared;
 
-    @Column(name = "is_collaborative", nullable = false)
-    private boolean isCollaborative;
+    @Column(name = "collaborative", nullable = false)
+    private boolean collaborative;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
+
+    @Column(name = "deleted_at")
+    private LocalDateTime deletedAt;
 
     @PrePersist
     protected void onCreate() {
@@ -50,13 +53,14 @@ public class Playlist {
     public Playlist()  {
     }
 
-    public Playlist(User user, String playlistName, String description, String coverUrl, boolean isPublic, boolean isCollaborative) {
+    public Playlist(String id, User user, String playlistName, String description, String coverUrl, boolean shared, boolean collaborative) {
+        this.id = id;
         this.user = user;
         this.playlistName = playlistName;
         this.description = description;
         this.coverUrl = coverUrl;
-        this.isPublic = isPublic;
-        this.isCollaborative = isCollaborative;
+        this.shared = shared;
+        this.collaborative = collaborative;
     }
 
     public void setUser(User user) {
@@ -75,12 +79,56 @@ public class Playlist {
         this.description = description;
     }
 
-    public void setPublic(boolean isShared) {
-        this.isPublic = isShared;
+    public void setShared(boolean shared) {
+        this.shared = shared;
     }
 
-    public void setCollaborative(boolean isCollaborative) {
-        this.isCollaborative = isCollaborative;
+    public void setCollaborative(boolean collaborative) {
+        this.collaborative = collaborative;
+    }
+
+    public void setDeletedAt(LocalDateTime deletedAt) {
+        this.deletedAt = deletedAt;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public String getPlaylistName() {
+        return playlistName;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getCoverUrl() {
+        return coverUrl;
+    }
+
+    public boolean isShared() {
+        return shared;
+    }
+
+    public boolean isCollaborative() {
+        return collaborative;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public LocalDateTime getDeletedAt() {
+        return deletedAt;
     }
 
 
