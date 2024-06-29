@@ -15,7 +15,7 @@ public class User {
     String username;
     @Column(nullable = false)
     String password;
-    @Column(unique = true, nullable = false)
+    @Column(unique = true)
     String email;
     @Column(name = "created_at", nullable = false, updatable = false)
     LocalDateTime createdAt;

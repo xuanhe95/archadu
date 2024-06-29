@@ -17,7 +17,10 @@ import {
   InputLabel,
   OutlinedInput,
   Stack,
-  Typography
+  Typography,
+  Alert,
+  Collapse,
+  Snackbar,
   // useMediaQuery
 } from '@mui/material';
 
@@ -33,6 +36,9 @@ import AnimateButton from 'ui-component/extended/AnimateButton';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
+
+import CancelIcon from '@mui/icons-material/Cancel';
+
 // import Google from 'assets/images/icons/social-google.svg';
 
 import { useNavigate } from 'react-router-dom';
@@ -47,6 +53,26 @@ const FirebaseLogin = ({ ...others }) => {
   // const customization = useSelector((state) => state.customization);
   const [checked, setChecked] = useState(true);
 
+
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
+  const [alertSeverity, setAlertSeverity] = useState('success');
+
+  const handleAlertClose = () => {
+    setShowAlert(false);
+  };
+
+  const handleAlterOpen = (message, severity) => {
+    setAlertMessage(message);
+    setAlertSeverity(severity);
+    setShowAlert(true);
+    setTimeout(() => {
+      setShowAlert(false);
+    }
+      , 5000);
+  };
+
+
   // const googleHandler = async () => {
   //   console.error('Login');
   // };
@@ -59,6 +85,9 @@ const FirebaseLogin = ({ ...others }) => {
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
+
+
+  //////////////////////////////////////////
 
   const navigate = useNavigate(); // 导航到其他页面
   return (
@@ -119,8 +148,41 @@ const FirebaseLogin = ({ ...others }) => {
           <Box sx={{ mb: 2 }}>
             <Typography variant="subtitle1">Sign in with your Username</Typography>
           </Box>
+
         </Grid>
       </Grid>
+
+      <Box sx={{ mb: 2 }}>
+        <Snackbar
+          open={showAlert}
+          autoHideDuration={5000}
+          onClose={handleAlertClose}
+          anchorOrigin={{ vertical: 'center', horizontal: 'center' }}
+
+        >
+          <Alert onClose={handleAlertClose} severity={alertSeverity} sx={{ width: '100%' }}>
+            {alertMessage}
+          </Alert>
+        </Snackbar>
+      </Box>
+      {/* <Collapse in={showAlert}>
+        <Alert
+          severity={alertSeverity}
+          action={
+            <IconButton
+              aria-label="close"
+              color="inherit"
+              size="small"
+              onClick={handleAlertClose}
+            >
+              <CancelIcon fontSize="inherit" />
+            </IconButton>
+          }
+          sx={{ mb: 2 }}
+        >
+          {alertMessage}
+        </Alert>
+      </Collapse> */}
 
       <Formik
         initialValues={{
@@ -137,26 +199,59 @@ const FirebaseLogin = ({ ...others }) => {
           console.log('try login');
           const { email, password } = values;
           try {
-            const response = await fetch(`http://${config.server_host}:${config.server_port}/api/login`, {
-              method: 'POST',
+            // const response = await fetch(`http://${config.server_host}:${config.server_port}/api/auth/login`, {
+            //   method: 'POST',
+            //   headers: {
+            //     'Content-Type': 'application/json'
+            //   },
+            //   body: JSON.stringify({
+            //     username: email,
+            //     password: password
+            //   })
+            // });
+
+            console.log("config.server_host:", config.server_host);
+            //登录验证
+            // 构建 URL，包含查询参数
+            const url = new URL(`http://${config.server_host}:${config.server_port}/api/auth/login`);
+            url.searchParams.append('username', email);
+            url.searchParams.append('password', password);
+
+            const response = await fetch(url.toString(), {
+              method: 'GET',
               headers: {
                 'Content-Type': 'application/json'
-              },
-              body: JSON.stringify({
-                username: email,
-                password: password
-              })
+              }
             });
-            if (response.ok) {
-              const token = await response.json();
-              console.log('Login success', token);
 
-              localStorage.setItem('token', JSON.stringify(token));
-              console.log('Stored token in local storage:', localStorage.getItem('token'));
-              console.log('token:', token);
-              navigate('/');
+            console.log('response:', response);
+            if (response.ok) {
+
+              const data = await response.json();
+              console.log('data:', data);
+              if (data.data.code === 200) {
+                console.log('Login success');
+                navigate('/');
+              } else {
+                console.log('Login failed:', data.message);
+                handleAlterOpen(data.data.msg, 'error');
+              }
+
+
+
+
+              // const token = await response.json();
+              // console.log('Login success', token);
+
+              // localStorage.setItem('token', JSON.stringify(token));
+              // console.log('Stored token in local storage:', localStorage.getItem('token'));
+              // console.log('token:', token);
+              // navigate('/');
             } else {
               console.log('Login failed:', response.statusText);
+              setAlertMessage('Login failed');
+              setAlertSeverity('error');
+              setShowAlert(true);
             }
           } catch (error) {
             console.error('Error during login:', error.message);
@@ -169,6 +264,10 @@ const FirebaseLogin = ({ ...others }) => {
             }
           } catch (err) {
             console.error(err);
+
+
+
+
             if (scriptedRef.current) {
               setStatus({ success: false });
               setErrors({ submit: err.message });

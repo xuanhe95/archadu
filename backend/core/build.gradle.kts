@@ -54,14 +54,30 @@ dependencies {
 	implementation("jakarta.validation:jakarta.validation-api:3.1.0")
 
 
-	// https://mvnrepository.com/artifact/org.hihn/musicbrainzws2-java
-	implementation("org.hihn:musicbrainzws2-java:3.0.15")
+//	// https://mvnrepository.com/artifact/org.hihn/musicbrainzws2-java
+//	implementation("org.hihn:musicbrainzws2-java:3.0.15")
+//
+//	// https://mvnrepository.com/artifact/fm.last/musicbrainz-data
+//	implementation("fm.last:musicbrainz-data:3.0.0")
+//
+//	implementation("info.schnatterer.musicbrainzws2-java:musicbrainzws2-java:3.0.2")
+//
 
-	// https://mvnrepository.com/artifact/fm.last/musicbrainz-data
-	implementation("fm.last:musicbrainz-data:3.0.0")
+	// slf4j
+	// https://mvnrepository.com/artifact/org.slf4j/slf4j-api
+	implementation("org.slf4j:slf4j-api:2.0.13")
 
-	implementation("info.schnatterer.musicbrainzws2-java:musicbrainzws2-java:3.0.2")
+	// slf4j - log4j binding
+	// https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-slf4j-impl
+	testImplementation("org.apache.logging.log4j:log4j-slf4j-impl:2.23.1")
 
+	// log4j2 核心
+	// https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core
+	implementation("org.apache.logging.log4j:log4j-core:2.23.1")
+
+	// log4j2 API
+	// https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-api
+	implementation("org.apache.logging.log4j:log4j-api:2.23.1")
 
 
 

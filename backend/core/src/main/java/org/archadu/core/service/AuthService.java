@@ -4,11 +4,15 @@ import cn.dev33.satoken.stp.StpUtil;
 import cn.dev33.satoken.util.SaResult;
 import org.archadu.core.model.User;
 import org.archadu.core.repository.UserRepo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class AuthService {
+    // 获取 Logger 实例
+    private static final Logger logger = LoggerFactory.getLogger(AuthService.class);
     private final UserRepo userRepo;
     @Autowired
     public AuthService(UserRepo userRepo) {
@@ -16,7 +20,6 @@ public class AuthService {
     }
 
     public SaResult login(String username, String password) {
-
         User user = userRepo.findByUsername(username);
         if(user == null){
             return SaResult.error("Login failed");

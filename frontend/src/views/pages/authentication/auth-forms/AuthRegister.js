@@ -18,7 +18,9 @@ import {
   InputLabel,
   OutlinedInput,
   // TextField,
-  Typography
+  Typography,
+  Alert,
+  Snackbar,
   // useMediaQuery
 } from '@mui/material';
 
@@ -46,6 +48,27 @@ const FirebaseRegister = ({ ...others }) => {
   const scriptedRef = useScriptRef();
   // const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
   // const customization = useSelector((state) => state.customization);
+
+
+
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
+  const [alertSeverity, setAlertSeverity] = useState('success');
+
+  const handleAlertClose = () => {
+    setShowAlert(false);
+  };
+
+  const handleAlterOpen = (message, severity) => {
+    setAlertMessage(message);
+    setAlertSeverity(severity);
+    setShowAlert(true);
+    setTimeout(() => {
+      setShowAlert(false);
+    }
+      , 5000);
+  };
+
   const [showPassword, setShowPassword] = useState(false);
   const [checked, setChecked] = useState(true);
 
@@ -129,6 +152,21 @@ const FirebaseRegister = ({ ...others }) => {
         </Grid>
       </Grid>
 
+
+      <Box sx={{ mb: 2 }}>
+        <Snackbar
+          open={showAlert}
+          autoHideDuration={5000}
+          onClose={handleAlertClose}
+          anchorOrigin={{ vertical: 'center', horizontal: 'center' }}
+
+        >
+          <Alert onClose={handleAlertClose} severity={alertSeverity} sx={{ width: '100%' }}>
+            {alertMessage}
+          </Alert>
+        </Snackbar>
+      </Box>
+
       <Formik
         initialValues={{
           email: '',
@@ -144,7 +182,7 @@ const FirebaseRegister = ({ ...others }) => {
           const { email, password } = values;
 
           try {
-            const response = await fetch(`http://${config.server_host}:${config.server_port}/api/user`, {
+            const response = await fetch(`http://${config.server_host}:${config.server_port}/api/user/register`, {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json'
@@ -159,32 +197,25 @@ const FirebaseRegister = ({ ...others }) => {
               // console.log('Login success', token)
               // localStorage.setItem('token', token);
               // navigate('/');
-              console.log('Register success');
-              console.log('username:', email);
-              console.log('password:', password);
 
-              try {
-                const response = await fetch(`http://${config.server_host}:${config.server_port}/api/login`, {
-                  method: 'POST',
-                  headers: {
-                    'Content-Type': 'application/json'
-                  },
-                  body: JSON.stringify({
-                    username: email,
-                    password: password
-                  })
-                });
-                if (response.ok) {
-                  const token = await response.json();
-                  console.log('Login success', token);
-                  localStorage.setItem('token', token);
-                  navigate('/');
-                } else {
-                  console.log('Login failed:', response.statusText);
-                }
-              } catch (error) {
-                console.error('Error during login:', error.message);
+
+
+              const data = await response.json();
+              console.log('data:', data);
+
+              if (data.success) {
+                console.log('Register success');
+                console.log('username:', email);
+                console.log('password:', password);
+                handleAlterOpen('Register success', 'success');
+                navigate('/home');
+
+
+              } else {
+                console.log('Register failed:', data.data.message);
+                handleAlterOpen('Register failed: ' + data.data.message, 'error');
               }
+
             } else {
               console.log('Register failed:', response.statusText);
             }

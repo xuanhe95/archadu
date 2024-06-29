@@ -6,6 +6,7 @@ import org.archadu.core.model.User;
 import org.archadu.core.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UserService {
@@ -15,16 +16,23 @@ public class UserService {
     public UserService(UserRepo userRepo) {
         this.userRepo = userRepo;
     }
-
+    @Transactional
     public User createUser(UserRequest req){
         User user = new User();
         user.setUsername(req.username());
         // Hash the password before saving it to the database
         String hashedPassword = BCrypt.hashpw(req.password(), BCrypt.gensalt());
         user.setPassword(hashedPassword);
-        user.setEmail(req.email());
+        if(req.email() != null && !req.email().isBlank() ){
+            user.setEmail(req.email());
+        }
 
-        return userRepo.save(user);
+        try{
+            return userRepo.save(user);
+        } catch (Exception e){
+            throw new IllegalArgumentException("Username already exists");
+        }
+
     }
 
 
