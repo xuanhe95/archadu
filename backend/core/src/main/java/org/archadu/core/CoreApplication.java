@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-@ComponentScan({"org.archadu.core.repository","org.archadu.core.service","org.archadu.core.controller"})
+@ComponentScan({"org.archadu.core.repository","org.archadu.core.service","org.archadu.core.controller","org.archadu.core.util"})
 public class CoreApplication {
 
 	public static void main(String[] args) {

@@ -1,5 +1,6 @@
 package org.archadu.core.controller;
 
+import cn.dev33.satoken.annotation.SaCheckLogin;
 import org.archadu.core.dto.PlaylistRequest;
 import org.archadu.core.dto.Response;
 import org.archadu.core.model.Playlist;
@@ -24,6 +25,7 @@ public class PlaylistController {
         this.playlistService = playlistService;
     }
 
+    @SaCheckLogin
     @PostMapping("/playlists")
     public Response<Playlist> createPlaylist(@RequestBody  PlaylistRequest req) {
         logger.info("Create playlist request received");

@@ -1,5 +1,6 @@
 package org.archadu.core.service;
 
+import cn.dev33.satoken.annotation.SaCheckLogin;
 import org.archadu.core.model.User;
 import org.archadu.core.model.Playlist;
 import org.archadu.core.repository.PlaylistsRepo;
@@ -23,6 +24,7 @@ public class PlaylistService {
         this.userRepo = userRepo;
         this.playlistsRepo = playlistsRepo;
     }
+
 
     @Transactional
     public Playlist createPlaylist(Long userId, String playlistName, String description, String coverUrl, boolean shared, boolean collaborative) {
