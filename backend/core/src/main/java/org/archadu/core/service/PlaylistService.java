@@ -40,7 +40,7 @@ public class PlaylistService {
     }
 
 
-@Transactional
+    @Transactional
     public Playlist updatePlaylist(String playlistId, Long userId, String playlistName, String description, String coverUrl, Boolean shared, Boolean collaborative) {
         Playlist playlist = playlistsRepo.findById(playlistId);
         if (playlist == null) {
