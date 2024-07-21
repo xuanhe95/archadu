@@ -1,4 +1,4 @@
-package org.archadu.core.util;
+package org.archadu.core.config;
 
 import cn.dev33.satoken.interceptor.SaInterceptor;
 import org.springframework.context.annotation.Configuration;

@@ -81,6 +81,30 @@ dependencies {
 
 
 
+
+	// musicbrainz-api-jersey-client
+	implementation ("io.aesy.musicbrainz:musicbrainz-api-jersey-client:1.0.0")
+// https://mvnrepository.com/artifact/fm.last/coverartarchive-api
+	implementation ("fm.last:coverartarchive-api:2.1.1")
+
+// https://mvnrepository.com/artifact/io.aesy.musicbrainz/musicbrainz-api-entities
+	implementation ("io.aesy.musicbrainz:musicbrainz-api-entities:1.0.0")
+// https://mvnrepository.com/artifact/io.aesy.musicbrainz/musicbrainz-api
+	implementation("io.aesy.musicbrainz:musicbrainz-api:1.0.0")
+
+// JAX-RS 客户端 API
+
+	// Jersey 客户端库
+	implementation("org.glassfish.jersey.core:jersey-client:3.1.0")
+	implementation("org.glassfish.jersey.inject:jersey-hk2:3.1.0")
+
+	// JAXB API
+	implementation ("javax.xml.bind:jaxb-api:2.3.1")
+
+	// JAXB Runtime
+	implementation ("org.glassfish.jaxb:jaxb-runtime:2.3.1")
+
+
 }
 
 tasks.withType<Test> {
