@@ -9,13 +9,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 
+
+
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 @Service
 public class CoverArtApiService {
-    private MusicBrainzClient client;
-    private CoverArtArchiveClient coverArtArchiveClient;
+    private final MusicBrainzClient client;
+    private final CoverArtArchiveClient coverArtArchiveClient;
+
+
+
     @Autowired
     public CoverArtApiService(CoverArtArchiveClient coverArtArchiveClient) {
         this.client = null;

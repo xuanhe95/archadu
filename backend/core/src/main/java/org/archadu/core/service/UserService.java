@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+
+
 @Service
 public class UserService {
     private final UserRepo userRepo;
@@ -18,6 +20,7 @@ public class UserService {
     }
     @Transactional
     public User createUser(UserRequest req){
+
         User user = new User();
         user.setUsername(req.username());
         // Hash the password before saving it to the database

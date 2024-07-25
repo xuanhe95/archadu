@@ -17,7 +17,7 @@ public class PlaylistTrack {
     @Id
     @ManyToOne
     @JoinColumn(nullable = false)
-    private Track track;
+    private Track2 track;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;

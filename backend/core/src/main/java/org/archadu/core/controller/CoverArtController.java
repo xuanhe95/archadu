@@ -16,8 +16,8 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/mb")
 public class CoverArtController {
-    private MusicBrainzClient client;
-    private CoverArtApiService coverArtApiService;
+    private final MusicBrainzClient client;
+    private final CoverArtApiService coverArtApiService;
     @Autowired
     public CoverArtController(CoverArtApiService coverArtApiService) {
 
@@ -34,6 +34,8 @@ public class CoverArtController {
         return client.artist().withId(UUID.fromString(artistId)).lookup().get();
     }
 
+//    curl --location 'http://localhost:8080/api/mb/coverart?mbid=76df3287-6cda-33eb-8e9a-044b5e15ffdd' \
+//            --header 'Cookie: satoken=56bf5675-5774-4d1e-aba5-903b52f636a6'
     @GetMapping("/coverart")
     public Response<List<String>> getCoverArtByMbId(@RequestParam String mbid) {
         final String testId = "76df3287-6cda-33eb-8e9a-044b5e15ffdd";

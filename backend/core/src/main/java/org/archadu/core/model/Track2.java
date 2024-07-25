@@ -7,17 +7,17 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "track")
-public class Track {
+public class Track2 {
     @Id
     private String trackId;
 
     @Column(name = "cover_url", nullable = true)
     private String coverUrl;
 
-    public Track() {
+    public Track2() {
     }
 
-    public Track(String trackId) {
+    public Track2(String trackId) {
         this.trackId = trackId;
     }
 
