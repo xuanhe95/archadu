@@ -9,37 +9,46 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 
-
 @RestController
 @RequestMapping("/api/auth")
+@CrossOrigin(origins = "http://localhost:3000")
 public class AuthController {
-    private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
+
+    private static final Logger log = LoggerFactory.getLogger(AuthController.class);
     private final AuthService authService;
     @Autowired
     public AuthController(AuthService authService) {
-        logger.info("AuthController created");
+        log.info("AuthController created");
         this.authService = authService;
     }
 
 
-    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/login")
     public Response<SaResult> login(@RequestParam String username, @RequestParam String password) {
-        logger.info("Login attempt with username: " + username + " and password: " + password);
+        log.info("Login attempt with username: " + username + " and password: " + password);
         SaResult result = authService.login(username, password);
-        return new Response<SaResult>("Login success", result);
+        if(result == null){
+            return Response.error("Login failed");
+        }
+        return Response.success(result);
     }
 
     @GetMapping("/logout")
     public Response<SaResult> logout() {
         SaResult result = authService.logout();
-        return new Response<SaResult>("Logout success", result);
+        if(result == null){
+            return Response.error("Logout failed");
+        }
+        return Response.success(result);
     }
 
     @GetMapping("/is-login")
     public Response<SaResult> isLogin() {
         SaResult result = authService.isLogin();
-        return new Response<SaResult>("User is logged in", result);
+        if(result == null){
+            return Response.error("Error checking login status");
+        }
+        return Response.success(result);
     }
 
 }

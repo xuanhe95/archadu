@@ -3,6 +3,8 @@ package org.archadu.core.api;
 import io.aesy.musicbrainz.client.MusicBrainzClient;
 import io.aesy.musicbrainz.entity.Artist;
 import org.archadu.core.dto.Response;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
@@ -15,50 +17,28 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/mb")
+@RequestMapping("/api/cover")
 public class CoverArtController {
-    private final MusicBrainzClient client;
+    private final Logger log = LoggerFactory.getLogger(CoverArtController.class);
     private final CoverArtApiService coverArtApiService;
-    private final RedisTemplate<String, Object> redisTemplate;
     @Autowired
-    public CoverArtController(CoverArtApiService coverArtApiService, RedisTemplate<String, Object> redisTemplate) {
-
-        System.out.println("MusicbrainzApiService");
-        this.client = null;
-        this.redisTemplate = redisTemplate;
+    public CoverArtController(CoverArtApiService coverArtApiService) {
+        log.info("CoverArtController created");
         this.coverArtApiService = coverArtApiService;
     }
 
-    @GetMapping("/artist")
-    public Artist getArtist(@RequestParam String artistId) {
-        if(artistId == null || artistId.isEmpty()){
-            return null;
-        }
-        return client.artist().withId(UUID.fromString(artistId)).lookup().get();
-    }
 
-//    curl --location 'http://localhost:8080/api/mb/coverart?mbid=76df3287-6cda-33eb-8e9a-044b5e15ffdd' \
-//            --header 'Cookie: satoken=56bf5675-5774-4d1e-aba5-903b52f636a6'
-    @GetMapping("/coverart")
+//    curl --location 'http://localhost:8080/api/cover?mbid=76df3287-6cda-33eb-8e9a-044b5e15ffdd' \
+//            --header 'Cookie: satoken=56bf5675-5774-4d1e-aba5-903b52f636a6; satoken=56bf5675-5774-4d1e-aba5-903b52f636a6'
+    @GetMapping()
     public Response<List<String>> getCoverArtByMbId(@RequestParam String mbid) {
         final String testId = "76df3287-6cda-33eb-8e9a-044b5e15ffdd";
 
-        long start = System.currentTimeMillis();
-
-        String key = "coverart:" + mbid;
-
-        List<String> urls = (List<String>) redisTemplate.opsForValue().get(key);
-        if (urls != null) {
-            System.out.println("Cache hit");
-            System.out.println("Time taken: " + (System.currentTimeMillis() - start));
-            return new Response<List<String>>("Success", urls);
+        List<String> urls = coverArtApiService.getCoverArtByMbId(mbid);
+        if(urls == null) {
+            return Response.error("Error in getting cover art");
         }
-        urls = coverArtApiService.getCoverArtByMbId(mbid);
-        redisTemplate.opsForValue().set(key, urls);
-        System.out.println("Cache miss");
-        System.out.println("Time taken: " + (System.currentTimeMillis() - start));
-
-        return new Response<List<String>>("Success" ,urls);
+        return Response.success(urls);
     }
 
 

@@ -19,4 +19,9 @@ Configuration:
       level: info
       appenderRefs:
         - ref: Console
-        - ref: LogFile
+    logger:
+      - name: org.archadu.core
+        level: debug
+        additivity: false
+        appenderRefs:
+          - ref: LogFile

@@ -8,12 +8,14 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
+
 @Service
 public class AlbumCoverApiService {
-    private static final String MUSIC_BRAINZ_URL = "https://musicbrainz.org/ws/2/release-group/?query=release:%s&fmt=json";
-    private static final String COVER_ART_URL= "https://coverartarchive.org/release-group/";
 
-    private RestTemplate restTemplate;
+    private static final String MB_RELEASE_URL = "https://musicbrainz.org/ws/2/release-group/?query=release:%s&fmt=json";
+    private static final String CA_RELEASE_URL= "https://coverartarchive.org/release-group/";
+
+    private final RestTemplate restTemplate;
     @Autowired
     public AlbumCoverApiService(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
@@ -24,7 +26,7 @@ public class AlbumCoverApiService {
         if(id == null || id.isEmpty()){
             return "";
         }
-        String url = "https://coverartarchive.org/release-group/" + id;
+        String url = CA_RELEASE_URL + id;
         try{
             ResponseEntity<CoverArtResponse> response = restTemplate.getForEntity(url, CoverArtResponse.class);
             if(response.getStatusCode().isError()){
@@ -44,7 +46,7 @@ public class AlbumCoverApiService {
 
     public String getMusicBrainzIdFromTitle(String title) {
         String query = URLEncoder.encode(title, StandardCharsets.UTF_8);
-        String url = String.format(MUSIC_BRAINZ_URL, query);
+        String url = String.format(MB_RELEASE_URL, query);
 
         try{
             ResponseEntity<MusicBrainzResponse> response = restTemplate.getForEntity(url, MusicBrainzResponse.class);

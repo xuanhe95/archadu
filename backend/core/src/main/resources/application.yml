@@ -36,6 +36,22 @@ spring:
   jmx:
     enabled:
       false
+
+
+app:
+  web:
+    host: localhost
+    port: 3000
+
+  server:
+    host: localhost
+    port: 8080
+
+musicbrainz:
+  release-url: https://musicbrainz.org/ws/2/release-group/?query=release:%s&fmt=json
+
+
+
 #
 #  cache:
 #    type: redis

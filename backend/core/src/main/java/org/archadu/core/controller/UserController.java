@@ -6,6 +6,8 @@ import org.archadu.core.dto.UserRequest;
 import org.archadu.core.model.User;
 import org.archadu.core.service.AuthService;
 import org.archadu.core.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("api/user")
 @CrossOrigin(origins = "http://localhost:3000")
 public class UserController {
+    private static final Logger log = LoggerFactory.getLogger(UserController.class);
 
     private final UserService userService;
     private final AuthService authService;
@@ -20,6 +23,7 @@ public class UserController {
 
     @Autowired
     public UserController(UserService userService, AuthService authService) {
+        log.info("UserController created");
         this.userService = userService;
         this.authService = authService;
     }
@@ -27,7 +31,7 @@ public class UserController {
     @PostMapping("/register")
     public Response<User> register(@RequestBody UserRequest req) {
         User createdUser = userService.createUser(req);
-        return new Response<User>("Create new user success", createdUser);
+        return Response.success(createdUser);
     }
 
     // 测试登录，浏览器访问： http://localhost:8081/user/doLogin?username=zhang&password=123456
@@ -51,7 +55,7 @@ public class UserController {
     @GetMapping("/user-by-username")
     public Response<User> getUserByUsername(@RequestParam String username) {
         User user = userService.getUserByUsername(username);
-        return new Response<User>("User found", user);
+        return Response.success(user);
     }
 
 }

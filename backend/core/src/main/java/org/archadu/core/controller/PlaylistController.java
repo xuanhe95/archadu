@@ -13,38 +13,37 @@ import org.slf4j.LoggerFactory;
 @RequestMapping("/api/playlist")
 public class PlaylistController {
 
-    private static final Logger logger = LoggerFactory.getLogger(PlaylistController.class);
-
+    private static final Logger log = LoggerFactory.getLogger(PlaylistController.class);
     private final PlaylistService playlistService;
+
     @Autowired
     public PlaylistController(PlaylistService playlistService) {
-
-        logger.info("PlaylistController created");
+        log.info("PlaylistController created");
         this.playlistService = playlistService;
     }
 
     @SaCheckLogin
     @PostMapping("/playlists")
     public Response<Playlist> createPlaylist(@RequestBody  PlaylistRequest req) {
-        logger.info("Create playlist request received");
+        log.info("Create playlist request received");
         Playlist playlist = playlistService.createPlaylist(req.userId(), req.playlistName(), req.description(), req.coverUrl(), req.shared(), req.collaborative());
-        return new Response<Playlist>("Create new playlist success", playlist);
+        return Response.success(playlist);
     }
 
     @DeleteMapping("/playlists")
-    public Response<Playlist> deletePlaylist(@RequestParam String id) {
+    public Response<String> deletePlaylist(@RequestParam String id) {
         try{
             playlistService.deletePlaylist(id);
-            return new Response<Playlist>("Delete playlist success", null);
+            return Response.success("Delete playlist success");
         } catch (Exception e) {
-            return new Response<Playlist>("Delete playlist failed", null);
+            return Response.error("Delete playlist failed");
         }
     }
 
     @PutMapping("/playlists")
     public Response<Playlist> updatePlaylist(@RequestBody PlaylistRequest req) {
         Playlist playlist = playlistService.updatePlaylist(req.playlistId(), req.userId(), req.playlistName(), req.description(), req.coverUrl(), req.shared(), req.collaborative());
-        return new Response<Playlist>("Update playlist success", playlist);
+        return Response.success(playlist);
     }
 
 }
