@@ -12,6 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
+import java.util.concurrent.TimeUnit;
+
 
 @Service
 public class UserService {
@@ -58,7 +60,7 @@ public class UserService {
 
         User user = userRepo.findByUsername(username);
         if(user != null){
-            redisTemplate.opsForValue().set(key, user);
+            redisTemplate.opsForValue().set(key, user, 1, TimeUnit.HOURS);
         }
 
         System.out.println("Cache miss");
