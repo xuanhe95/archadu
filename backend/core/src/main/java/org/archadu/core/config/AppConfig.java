@@ -19,40 +19,40 @@ public class AppConfig {
 
 //    @Bean(name = "coreData")
 //    @Primary
-//    @ConfigurationProperties(prefix = "spring.datasource.core")
+//    @ConfigurationProperties(prefix = "spring.datasource")
 //    public DataSourceProperties coreDataSourceProperties() {
 //        return new DataSourceProperties();
 //    }
-//
+
 //    @Bean(name = "mbData")
-//    @ConfigurationProperties(prefix = "spring.datasource.mb")
+//    @ConfigurationProperties(prefix = "spring.mb")
 //    public DataSourceProperties musicDataSourceProperties() {
 //        return new DataSourceProperties();
 //    }
-//
+
 //    @Bean(name = "mbDataSource")
 //    @ConfigurationProperties(prefix = "spring.datasource.mb.hikari")
 //    public DataSource musicDataSource() {
 //        return musicDataSourceProperties().initializeDataSourceBuilder().type(HikariDataSource.class).build();
 //    }
-//
+
 //    @Primary
-//    @Bean(name = "coreDataSource")
+//    @Bean(name = "coreDataSource2")
 //    @ConfigurationProperties(prefix = "spring.datasource.core.hikari")
 //    public DataSource dataSource() {
 //        return coreDataSourceProperties().initializeDataSourceBuilder().build();
 //    }
 //
-//
+
 //    @Bean(name = "mbJdbcTemplate")
 //    public JdbcTemplate musicJdbcTemplate(@Qualifier("mbDataSource") DataSource dataSource) {
 //        return new JdbcTemplate(dataSource);
 //    }
-//
-//    @Bean(name = "coreJdbcTemplate")
-//        public JdbcTemplate coreJdbcTemplate(@Qualifier("coreDataSource") DataSource dataSource) {
-//        return new JdbcTemplate(dataSource);
-//    }
+
+    @Bean(name = "coreJdbcTemplate")
+        public JdbcTemplate coreJdbcTemplate(@Qualifier("coreDataSource") DataSource dataSource) {
+        return new JdbcTemplate(dataSource);
+    }
 
 
 

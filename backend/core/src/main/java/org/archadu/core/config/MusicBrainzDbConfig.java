@@ -7,7 +7,6 @@ import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -24,27 +23,27 @@ import javax.sql.DataSource;
         transactionManagerRef = "mbTransactionManager"
 )
 public class MusicBrainzDbConfig {
-        @Bean(name = "mbDataSource")
-        @ConfigurationProperties(prefix = "spring.datasource.mb")
-        public DataSource primaryDataSource() {
-            return DataSourceBuilder.create().build();
-        }
 
-        @Bean(name = "mbEntityManagerFactory")
-        public LocalContainerEntityManagerFactoryBean primaryEntityManagerFactory(
-                EntityManagerFactoryBuilder builder,
-                @Qualifier("mbDataSource") DataSource dataSource) {
-            return builder
-                    .dataSource(dataSource)
-                    .packages("org.archadu.core.fm")
-                    .persistenceUnit("secondary")
-                    .build();
-        }
+    @Bean(name = "mbDataSource")
+    @ConfigurationProperties(prefix = "spring.datasource.mb")
+    public DataSource mbDataSource() {
+        return DataSourceBuilder.create().build();
+    }
 
-        @Bean(name = "mbTransactionManager")
-        public PlatformTransactionManager primaryTransactionManager(
-                @Qualifier("mbEntityManagerFactory") EntityManagerFactory primaryEntityManagerFactory) {
-            return new JpaTransactionManager(primaryEntityManagerFactory);
-        }
+    @Bean(name = "mbEntityManagerFactory")
+    public LocalContainerEntityManagerFactoryBean mbEntityManagerFactory(
+            EntityManagerFactoryBuilder builder,
+            @Qualifier("mbDataSource") DataSource dataSource) {
+        return builder
+                .dataSource(dataSource)
+                .packages("org.archadu.core.fm.model")
+                .persistenceUnit("mb")
+                .build();
+    }
 
+    @Bean(name = "mbTransactionManager")
+    public PlatformTransactionManager mbTransactionManager(
+            @Qualifier("mbEntityManagerFactory") EntityManagerFactory mbEntityManagerFactory) {
+        return new JpaTransactionManager(mbEntityManagerFactory);
+    }
 }
