@@ -2,11 +2,12 @@ package org.archadu.core.model;
 
 import jakarta.persistence.*;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "playlists")
-public class Playlist {
+public class Playlist implements Serializable {
     @Id
     @Column(name = "id", nullable = false, updatable = false)
     private String id;

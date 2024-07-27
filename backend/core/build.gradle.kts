@@ -46,6 +46,20 @@ dependencies {
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
+	// Redis
+	// https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-data-redis
+	implementation("org.springframework.boot:spring-boot-starter-data-redis:3.3.2")
+
+	// https://mvnrepository.com/artifact/redis.clients/jedis
+	implementation("redis.clients:jedis:5.1.3")
+
+
+	// Cache
+	// https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-cache
+	implementation("org.springframework.boot:spring-boot-starter-cache:3.3.2")
+
+
+
 	// Sa-Token 权限认证，在线文档：https://sa-token.cc
 	implementation ("cn.dev33:sa-token-spring-boot3-starter:1.38.0")
 
@@ -110,6 +124,8 @@ dependencies {
 	implementation ("io.aesy.musicbrainz:musicbrainz-api-entities:1.0.0")
 	// https://mvnrepository.com/artifact/io.aesy.musicbrainz/musicbrainz-api
 	implementation("io.aesy.musicbrainz:musicbrainz-api:1.0.0")
+
+
 
 
 

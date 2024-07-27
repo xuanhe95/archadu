@@ -3,12 +3,13 @@ package org.archadu.core.model;
 import jakarta.persistence.*;
 import org.archadu.core.model.ids.PlaylistTrackId;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "playlist_track")
 @IdClass(PlaylistTrackId.class)
-public class PlaylistTrack {
+public class PlaylistTrack implements Serializable {
     @Id
     @ManyToOne
     @JoinColumn(nullable = false)

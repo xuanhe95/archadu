@@ -47,4 +47,11 @@ public class UserController {
         return "当前会话是否登录：" + StpUtil.isLogin();
     }
 
+
+    @GetMapping("/user-by-username")
+    public Response<User> getUserByUsername(@RequestParam String username) {
+        User user = userService.getUserByUsername(username);
+        return new Response<User>("User found", user);
+    }
+
 }
