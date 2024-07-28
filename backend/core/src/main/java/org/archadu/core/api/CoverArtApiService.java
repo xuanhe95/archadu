@@ -18,11 +18,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
+
 @Service
 public class CoverArtApiService {
     private static final Logger log = LoggerFactory.getLogger(CoverArtApiService.class);
-    private final CoverArtArchiveClient coverArtArchiveClient;
 
+
+    private final CoverArtArchiveClient coverArtArchiveClient;
     private final RedisTemplate<String, Object> redisTemplate;
 
     @Autowired
@@ -35,13 +38,14 @@ public class CoverArtApiService {
     public List<String> getCoverArtByMbId(String mbid) {
         long start = System.currentTimeMillis();
         String key = "coverart:" + mbid;
+
         List<String> urls = (List<String>) redisTemplate.opsForValue().get(key);
+
         if(urls != null) {
             log.info("Cache hit");
             log.info("Time taken: " + (System.currentTimeMillis() - start));
             return urls;
         }
-
 
         UUID uuid = UUID.fromString(mbid);
         urls = new ArrayList<>();
@@ -56,7 +60,9 @@ public class CoverArtApiService {
         } catch (Exception e) {
             log.error("Error in getting cover art: " + e.getMessage());
         }
-        redisTemplate.opsForValue().set(key, urls);
+        redisTemplate.opsForValue().set(key, urls, 10, TimeUnit.HOURS);
+
+
         log.info("Cache miss");
         log.info("Time taken: " + (System.currentTimeMillis() - start));
         return urls;

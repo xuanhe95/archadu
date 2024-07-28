@@ -50,6 +50,11 @@ dependencies {
 	// https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-data-redis
 	implementation("org.springframework.boot:spring-boot-starter-data-redis:3.3.2")
 
+	// RabbitMQ
+	// https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-amqp
+	implementation("org.springframework.boot:spring-boot-starter-amqp:3.3.2")
+
+
 	// https://mvnrepository.com/artifact/redis.clients/jedis
 	implementation("redis.clients:jedis:5.1.3")
 
@@ -124,6 +129,8 @@ dependencies {
 	implementation ("io.aesy.musicbrainz:musicbrainz-api-entities:1.0.0")
 	// https://mvnrepository.com/artifact/io.aesy.musicbrainz/musicbrainz-api
 	implementation("io.aesy.musicbrainz:musicbrainz-api:1.0.0")
+
+
 
 
 
