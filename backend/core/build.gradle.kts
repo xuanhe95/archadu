@@ -50,10 +50,17 @@ dependencies {
 	// https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-data-redis
 	implementation("org.springframework.boot:spring-boot-starter-data-redis:3.3.2")
 
+	// https://mvnrepository.com/artifact/org.mongodb/mongodb-driver-sync
+	implementation("org.mongodb:mongodb-driver-sync:5.1.2")
+
+
 	// RabbitMQ
 	// https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-amqp
 	implementation("org.springframework.boot:spring-boot-starter-amqp:3.3.2")
 
+	// MongoDB
+	// https://mvnrepository.com/artifact/org.springframework.data/spring-data-mongodb
+	implementation("org.springframework.data:spring-data-mongodb:4.3.2")
 
 	// https://mvnrepository.com/artifact/redis.clients/jedis
 	implementation("redis.clients:jedis:5.1.3")

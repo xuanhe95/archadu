@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
 @SpringBootApplication
 @ComponentScan({"org.archadu.core",
@@ -15,9 +16,11 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 		"org.archadu.core.util",
 		"org.archadu.core.config",
 		"org.archadu.core.api",
+		"org.archadu.core.repository",
 		"org.archadu.core.fm",
 })
 @EntityScan(basePackages ={"org.archadu.core"})
+@EnableMongoRepositories(basePackages = "org.archadu.core.repository")
 //@EnableJpaRepositories(basePackages = {"org.archadu.core.repository", "fm.last.musicbrainz.data"})
 public class CoreApplication {
 
