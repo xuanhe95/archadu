@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 @RestController
 @RequestMapping("/api/cover")
@@ -39,6 +40,38 @@ public class CoverArtController {
             return Response.error("Error in getting cover art");
         }
         return Response.success(urls);
+    }
+
+    @GetMapping("/async")
+    public CompletableFuture<Response<List<String>>> getCoverArtByMbIdAsync(@RequestParam String mbid) {
+        return coverArtApiService.getCoverArtByMbIdAsync(mbid)
+            .thenApply(Response::success)
+            .exceptionally(e -> Response.error("Error in getting cover art"));
+    }
+
+    @GetMapping("/async/three")
+    public Response<List<List<String>>> getCoverArtByMbIdAsyncThree(@RequestParam String mbid1, @RequestParam String mbid2, @RequestParam String mbid3) {
+        CompletableFuture<List<String>> coverArt1 = coverArtApiService.getCoverArtByMbIdAsync(mbid1);
+        CompletableFuture<List<String>> coverArt2 = coverArtApiService.getCoverArtByMbIdAsync(mbid2);
+        CompletableFuture<List<String>> coverArt3 = coverArtApiService.getCoverArtByMbIdAsync(mbid3);
+        try {
+            CompletableFuture.allOf(coverArt1, coverArt2, coverArt3).get();
+            return Response.success(List.of(coverArt1.get(), coverArt2.get(), coverArt3.get()));
+        } catch (Exception e) {
+            log.error("Error in getting cover art: " + e.getMessage());
+            return Response.error("Error in getting cover art");
+        }
+    }
+
+    @GetMapping("/three")
+    public Response<List<List<String>>> getCoverArtByMbIdThree(@RequestParam String mbid1, @RequestParam String mbid2, @RequestParam String mbid3) {
+        List<String> coverArt1 = coverArtApiService.getCoverArtByMbId(mbid1);
+        List<String> coverArt2 = coverArtApiService.getCoverArtByMbId(mbid2);
+        List<String> coverArt3 = coverArtApiService.getCoverArtByMbId(mbid3);
+        if(coverArt1 == null || coverArt2 == null || coverArt3 == null) {
+            return Response.error("Error in getting cover art");
+        }
+        return Response.success(List.of(coverArt1, coverArt2, coverArt3));
     }
 
 
